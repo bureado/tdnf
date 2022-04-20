@@ -126,6 +126,14 @@ TDNFVerifyRepoMDSignature(
         BAIL_ON_TDNF_ERROR(dwError);
     }
 
+    nGPGError = gpgme_ctx_set_engine_info(pContext, protocol, "/usr/bin/gpg", "/root/.gnupg");
+    if (nGPGError)
+    {
+        pHandle->nGPGError = nGPGError;
+        dwError = ERROR_TDNF_GPG_ERROR;
+        BAIL_ON_TDNF_ERROR(dwError);
+    }
+
     dwError = gpgme_op_verify(pContext, dataSig, dataText, NULL);
     if (dwError)
     {
